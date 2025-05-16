@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.Extensions.DependencyInjection;
-using Volo.Abp.Uow;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
@@ -38,15 +36,15 @@ public class GameRepositoryEntityFrameworkCoreModule : AbpModule
     {
         context.Services.AddAbpDbContext<GameRepositoryDbContext>(options =>
         {
-                /* Remove "includeAllEntities: true" to create
-                 * default repositories only for aggregate roots */
+            /* Remove "includeAllEntities: true" to create
+             * default repositories only for aggregate roots */
             options.AddDefaultRepositories(includeAllEntities: true);
         });
 
         Configure<AbpDbContextOptions>(options =>
         {
-                /* The main point to change your DBMS.
-                 * See also GameRepositoryMigrationsDbContextFactory for EF Core tooling. */
+            /* The main point to change your DBMS.
+             * See also GameRepositoryMigrationsDbContextFactory for EF Core tooling. */
             options.UseSqlServer();
         });
 

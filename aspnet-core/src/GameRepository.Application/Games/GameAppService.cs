@@ -1,11 +1,8 @@
-﻿using AutoMapper.Internal.Mappers;
-using GameRepository.Games.Dtos;
+﻿using GameRepository.Games.Dtos;
 using GameRepository.Permissions;
 using Microsoft.AspNetCore.Authorization;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
@@ -14,13 +11,7 @@ namespace GameRepository.Games
 {
     [Authorize(GameRepositoryPermissions.Games.Default)]
     public class GameAppService :
-        CrudAppService<
-            Game,
-            GameDto,
-            Guid,
-            GetGameListDto,
-            CreateGameDto,
-            CreateGameDto>,
+        CrudAppService<Game,GameDto,Guid, GetGameListDto, CreateGameDto, CreateGameDto>,
         IGameAppService
     {
         private readonly GameManager _gameManager;

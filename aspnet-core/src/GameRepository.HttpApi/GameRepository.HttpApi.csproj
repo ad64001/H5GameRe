@@ -8,9 +8,6 @@
     <RootNamespace>GameRepository</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\GameRepository.Application.Contracts\GameRepository.Application.Contracts.csproj" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Volo.Abp.Account.HttpApi" Version="9.0.2" />
@@ -19,6 +16,11 @@
     <PackageReference Include="Volo.Abp.TenantManagement.HttpApi" Version="9.0.2" />
     <PackageReference Include="Volo.Abp.FeatureManagement.HttpApi" Version="9.0.2" />
     <PackageReference Include="Volo.Abp.SettingManagement.HttpApi" Version="9.0.2" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\GameRepository.Domain.Shared\GameRepository.Domain.Shared.csproj" />
   </ItemGroup>
 
 </Project>

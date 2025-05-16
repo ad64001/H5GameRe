@@ -4,13 +4,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.IO.Compression;
-using System.IO;
-using System.Threading.Tasks;
 using System;
-using Volo.Abp.Domain.Repositories;
-using Volo.Abp;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
+using System.Threading.Tasks;
+using Volo.Abp;
+using Volo.Abp.Domain.Repositories;
 
 namespace GameRepository.Controllers
 {
@@ -33,13 +33,14 @@ namespace GameRepository.Controllers
         }
 
         [HttpPost]
+        [Consumes("multipart/form-data")]
         public async Task<GameDto> UploadGameAsync(
-            [FromForm] string name,
-            [FromForm] string description,
-            [FromForm] string developerName,
-            [FromForm] string version,
-            [FromForm] IFormFile icon,
-            [FromForm] IFormFile gamePackage)
+            string name,
+            string description,
+            string developerName,
+            string version,
+            IFormFile icon,
+            IFormFile gamePackage)
         {
             if (gamePackage == null || gamePackage.Length == 0)
             {

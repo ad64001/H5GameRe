@@ -1,2 +1,2 @@
 ﻿using System.Runtime.CompilerServices;
-[assembly:InternalsVisibleToAttribute("GameRepository.Application.Tests")]
+[assembly: InternalsVisibleToAttribute("GameRepository.Application.Tests")]

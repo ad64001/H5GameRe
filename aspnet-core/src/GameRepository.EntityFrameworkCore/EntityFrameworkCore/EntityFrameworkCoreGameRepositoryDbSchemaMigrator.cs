@@ -1,8 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using GameRepository.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using GameRepository.Data;
+using System;
+using System.Threading.Tasks;
 using Volo.Abp.DependencyInjection;
 
 namespace GameRepository.EntityFrameworkCore;

@@ -1,8 +1,8 @@
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp;
 
 namespace GameRepository.HttpApi.Client.ConsoleTestApp;
@@ -20,8 +20,8 @@ public class ConsoleTestAppHostedService : IHostedService
     {
         using (var application = await AbpApplicationFactory.CreateAsync<GameRepositoryConsoleApiClientModule>(options =>
         {
-           options.Services.ReplaceConfiguration(_configuration);
-           options.UseAutofac();
+            options.Services.ReplaceConfiguration(_configuration);
+            options.UseAutofac();
         }))
         {
             await application.InitializeAsync();

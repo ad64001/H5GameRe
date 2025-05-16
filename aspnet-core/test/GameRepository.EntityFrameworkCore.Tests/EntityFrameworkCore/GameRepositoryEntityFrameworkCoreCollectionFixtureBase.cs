@@ -1,5 +1,4 @@
-﻿using GameRepository.EntityFrameworkCore;
-using Xunit;
+﻿using Xunit;
 
 namespace GameRepository.EntityFrameworkCore;
 

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GameRepository.Localization;
+﻿using GameRepository.Localization;
 using Volo.Abp.Application.Services;
 
 namespace GameRepository;

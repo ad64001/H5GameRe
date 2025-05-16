@@ -32,13 +32,13 @@ public class SampleRepositoryTests : GameRepositoryEntityFrameworkCoreTestBase
          */
         await WithUnitOfWorkAsync(async () =>
         {
-                //Act
-                var adminUser = await (await _appUserRepository.GetQueryableAsync())
-                .Where(u => u.UserName == "admin")
-                .FirstOrDefaultAsync();
+            //Act
+            var adminUser = await (await _appUserRepository.GetQueryableAsync())
+            .Where(u => u.UserName == "admin")
+            .FirstOrDefaultAsync();
 
-                //Assert
-                adminUser.ShouldNotBeNull();
+            //Assert
+            adminUser.ShouldNotBeNull();
         });
     }
 }

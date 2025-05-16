@@ -1,29 +1,30 @@
+using GameRepository.EntityFrameworkCore;
+using GameRepository.MultiTenancy;
+using GameRepository.Swagger;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
+using OpenIddict.Validation.AspNetCore;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using GameRepository.EntityFrameworkCore;
-using GameRepository.MultiTenancy;
-using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonXLite;
-using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonXLite.Bundling;
-using Microsoft.OpenApi.Models;
-using OpenIddict.Validation.AspNetCore;
 using Volo.Abp;
 using Volo.Abp.Account;
 using Volo.Abp.Account.Web;
 using Volo.Abp.AspNetCore.MultiTenancy;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.AspNetCore.Mvc.UI.Bundling;
+using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonXLite;
+using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonXLite.Bundling;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared;
 using Volo.Abp.AspNetCore.Serilog;
 using Volo.Abp.Autofac;
-using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
 using Volo.Abp.Security.Claims;
 using Volo.Abp.Swashbuckle;
@@ -142,17 +143,35 @@ public class GameRepositoryHttpApiHostModule : AbpModule
     private static void ConfigureSwaggerServices(ServiceConfigurationContext context, IConfiguration configuration)
     {
         context.Services.AddAbpSwaggerGenWithOAuth(
-            configuration["AuthServer:Authority"]!,
-            new Dictionary<string, string>
+        configuration["AuthServer:Authority"]!,
+        new Dictionary<string, string>
+        {
+            {"GameRepository", "GameRepository API"}
+        },
+        options =>
+        {
+            options.SwaggerDoc("v1", new OpenApiInfo { Title = "GameRepository API", Version = "v1" });
+            options.DocInclusionPredicate((docName, description) => true);
+            options.CustomSchemaIds(type => type.FullName);
+
+            // 添加文件上传过滤器
+            options.OperationFilter<FileUploadFilter>();
+
+            // 支持控制器属性路由
+            options.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+
+            // 添加对 IFormFile 的特殊处理
+            options.MapType<IFormFile>(() => new OpenApiSchema
             {
-                    {"GameRepository", "GameRepository API"}
-            },
-            options =>
-            {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "GameRepository API", Version = "v1" });
-                options.DocInclusionPredicate((docName, description) => true);
-                options.CustomSchemaIds(type => type.FullName);
+                Type = "object",
+                Properties = new Dictionary<string, OpenApiSchema>
+                {
+                    { "FileName", new OpenApiSchema { Type = "string" } },
+                    { "Length", new OpenApiSchema { Type = "integer", Format = "int64" } },
+                    { "ContentType", new OpenApiSchema { Type = "string" } }
+                }
             });
+        });
     }
 
     private void ConfigureCors(ServiceConfigurationContext context, IConfiguration configuration)

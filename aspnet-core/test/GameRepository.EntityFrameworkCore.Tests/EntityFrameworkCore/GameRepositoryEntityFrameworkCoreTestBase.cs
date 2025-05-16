@@ -1,6 +1,4 @@
-﻿using Volo.Abp;
-
-namespace GameRepository.EntityFrameworkCore;
+﻿namespace GameRepository.EntityFrameworkCore;
 
 public abstract class GameRepositoryEntityFrameworkCoreTestBase : GameRepositoryTestBase<GameRepositoryEntityFrameworkCoreTestModule>
 {

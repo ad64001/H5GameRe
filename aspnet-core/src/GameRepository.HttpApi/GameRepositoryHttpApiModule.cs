@@ -1,5 +1,5 @@
-﻿using Localization.Resources.AbpUi;
-using GameRepository.Localization;
+﻿using GameRepository.Localization;
+using Localization.Resources.AbpUi;
 using Volo.Abp.Account;
 using Volo.Abp.FeatureManagement;
 using Volo.Abp.Identity;
