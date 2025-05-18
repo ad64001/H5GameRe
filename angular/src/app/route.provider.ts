@@ -13,8 +13,16 @@ function configureRoutes(routesService: RoutesService) {
         name: '::Menu:Home',
         iconClass: 'fas fa-home',
         order: 1,
-        layout: eLayoutType.application,
+        layout: eLayoutType.application
       },
+      {
+        path: '/games',
+        name: 'Games',
+        iconClass: 'fas fa-gamepad',
+        order: 2,
+        layout: eLayoutType.application,
+        requiredPolicy: 'GameRepository.Games'
+      }
     ]);
   };
 }
