@@ -10,7 +10,6 @@ import { GameListComponent } from './game-list/game-list.component';
 
 @NgModule({
   declarations: [
-    GameListComponent
   ],
   imports: [
     CommonModule,
@@ -19,7 +18,8 @@ import { GameListComponent } from './game-list/game-list.component';
     ReactiveFormsModule,
     CoreModule,
     ThemeSharedModule,
-    NgbDropdownModule
+    NgbDropdownModule,
+    GameListComponent
   ]
 })
 export class GamesModule { }

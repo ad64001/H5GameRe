@@ -1,0 +1,96 @@
+
+// Custom styling for game-list component
+
+// Game list card
+.card {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  margin-bottom: 1.5rem;
+}
+
+// Status badges
+.badge {
+  padding: 0.5em 0.75em;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+// Game thumbnail container
+.img-thumbnail {
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+// Game info styling
+.table td {
+  vertical-align: middle;
+}
+
+// Button spacing in game actions
+.btn-group .btn {
+  margin-right: 0.25rem;
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+// Status filter buttons
+.btn-group.float-right {
+  .btn {
+    transition: all 0.2s;
+
+    &.active {
+      font-weight: 500;
+    }
+  }
+}
+
+// Modal improvements
+.modal-dialog {
+  .modal-content {
+    border-radius: 0.5rem;
+
+    .modal-header {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-footer {
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+// Status selection list
+.list-group-item {
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover:not(.active) {
+    background-color: rgba(0, 0, 0, 0.025);
+  }
+
+  &.active {
+    font-weight: 500;
+  }
+}
+
+// Upload form
+.form-control {
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.25rem;
+
+  &:focus {
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+}
+
+// Alert styling
+.alert-info {
+  background-color: rgba(0, 123, 255, 0.1);
+  border-color: rgba(0, 123, 255, 0.2);
+  color: rgba(0, 0, 0, 0.7);
+}
+
+// Helper for spacing
+.me-2 {
+  margin-right: 0.5rem;
+}

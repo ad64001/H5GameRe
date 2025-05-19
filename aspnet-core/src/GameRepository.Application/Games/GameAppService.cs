@@ -63,7 +63,7 @@ namespace GameRepository.Games
                 throw new GameNotApprovedException(id);
             }
 
-            return $"/games/{game.Id}/{game.EntryFile}";
+            return $"{game.GamePath}/index.html";
         }
 
         protected override async Task<IQueryable<Game>> CreateFilteredQueryAsync(GetGameListDto input)
