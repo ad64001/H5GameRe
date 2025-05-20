@@ -37,4 +37,8 @@
     <None Remove="Logs\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\games\" />
+  </ItemGroup>
+
 </Project>
