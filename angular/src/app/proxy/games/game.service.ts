@@ -9,7 +9,7 @@ import { Injectable } from '@angular/core';
 })
 export class GameService {
   apiName = 'Default';
-
+  
 
   changeStatus = (id: string, input: UpdateGameStatusDto, config?: Partial<Rest.Config>) =>
     this.restService.request<any, GameDto>({
@@ -18,7 +18,7 @@ export class GameService {
       body: input,
     },
     { apiName: this.apiName,...config });
-
+  
 
   create = (input: CreateGameDto, config?: Partial<Rest.Config>) =>
     this.restService.request<any, GameDto>({
@@ -27,7 +27,7 @@ export class GameService {
       body: input,
     },
     { apiName: this.apiName,...config });
-
+  
 
   delete = (id: string, config?: Partial<Rest.Config>) =>
     this.restService.request<any, void>({
@@ -35,7 +35,7 @@ export class GameService {
       url: `/api/app/game/${id}`,
     },
     { apiName: this.apiName,...config });
-
+  
 
   get = (id: string, config?: Partial<Rest.Config>) =>
     this.restService.request<any, GameDto>({
@@ -43,7 +43,7 @@ export class GameService {
       url: `/api/app/game/${id}`,
     },
     { apiName: this.apiName,...config });
-
+  
 
   getGameEntryUrl = (id: string, config?: Partial<Rest.Config>) =>
     this.restService.request<any, string>({
@@ -52,7 +52,7 @@ export class GameService {
       url: `/api/app/game/${id}/game-entry-url`,
     },
     { apiName: this.apiName,...config });
-
+  
 
   getList = (input: GetGameListDto, config?: Partial<Rest.Config>) =>
     this.restService.request<any, PagedResultDto<GameDto>>({
@@ -61,7 +61,7 @@ export class GameService {
       params: { filter: input.filter, status: input.status, sorting: input.sorting, skipCount: input.skipCount, maxResultCount: input.maxResultCount },
     },
     { apiName: this.apiName,...config });
-
+  
 
   update = (id: string, input: CreateGameDto, config?: Partial<Rest.Config>) =>
     this.restService.request<any, GameDto>({

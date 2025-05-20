@@ -43,5 +43,34 @@ namespace GameRepository.Games
             game.Status = status;
             await _gameRepository.UpdateAsync(game);
         }
+
+        public async Task UpdateAsync(
+            Game game,
+            string name,
+            string description,
+            string iconUrl,
+            string gamePath,
+            string entryFile,
+            string developerName,
+            string version)
+        {
+            // 检查游戏对象是否存在
+            if (game == null)
+            {
+                throw new ArgumentNullException(nameof(game));
+            }
+
+            // 更新游戏属性
+            game.Name = name;
+            game.Description = description;
+            game.IconUrl = iconUrl;
+            game.GamePath = gamePath;
+            game.EntryFile = entryFile;
+            game.DeveloperName = developerName;
+            game.Version = version;
+
+            // 更新最后修改时间
+            game.LastModificationTime = DateTime.Now;
+        }
     }
 }
