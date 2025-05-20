@@ -41,8 +41,6 @@ export class GameListComponent implements OnInit {
   // Modals
   statusChangeModal: any;
   deleteConfirmModal: any;
-  uploadModal: any;
-  editModal: any;
 
   // Permission flags
   hasManagePermission = false;
@@ -52,8 +50,6 @@ export class GameListComponent implements OnInit {
   // File inputs
   @ViewChild('iconInput') iconInput!: ElementRef<HTMLInputElement>;
   @ViewChild('gamePackageInput') gamePackageInput!: ElementRef<HTMLInputElement>;
-  @ViewChild('editIconInput') editIconInput!: ElementRef<HTMLInputElement>;
-  @ViewChild('editGamePackageInput') editGamePackageInput!: ElementRef<HTMLInputElement>;
 
   constructor(
     private gameService: GameService,
@@ -69,26 +65,12 @@ export class GameListComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    // Initialize modals with a delay to ensure DOM is ready
-    setTimeout(() => {
-      this.initModals();
-    }, 100);
+    // Initialize modals
+    this.initModals();
   }
 
   private initModals(): void {
-    try {
-      // Check if bootstrap is available
-      if (typeof bootstrap === 'undefined') {
-        console.warn('Bootstrap JavaScript is not loaded. Modal functionality may be limited.');
-        return;
-      }
-
-      // Initialize all modals
-      const uploadModalElement = document.getElementById('uploadGameModal');
-      if (uploadModalElement) {
-        this.uploadModal = new bootstrap.Modal(uploadModalElement);
-      }
-
+    setTimeout(() => {
       const statusModalElement = document.getElementById('statusChangeModal');
       if (statusModalElement) {
         this.statusChangeModal = new bootstrap.Modal(statusModalElement);
@@ -98,14 +80,7 @@ export class GameListComponent implements OnInit {
       if (deleteModalElement) {
         this.deleteConfirmModal = new bootstrap.Modal(deleteModalElement);
       }
-
-      const editModalElement = document.getElementById('editGameModal');
-      if (editModalElement) {
-        this.editModal = new bootstrap.Modal(editModalElement);
-      }
-    } catch (error) {
-      console.error('Error initializing modals:', error);
-    }
+    }, 0);
   }
 
   private checkPermissions(): void {
@@ -165,67 +140,6 @@ export class GameListComponent implements OnInit {
     this.getGameList();
   }
 
-  // Modified showUploadModal with fallback handling
-  showUploadModal(): void {
-    try {
-      if (this.uploadModal) {
-        this.uploadModal.show();
-      } else {
-        // Try to initialize the modal if not already done
-        const modalElement = document.getElementById('uploadGameModal');
-        if (modalElement) {
-          if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
-            this.uploadModal = new bootstrap.Modal(modalElement);
-            this.uploadModal.show();
-          } else {
-            // Fallback if bootstrap is not available
-            this.showModalFallback(modalElement);
-          }
-        } else {
-          this.toastService.error('Upload modal element not found in the DOM');
-        }
-      }
-    } catch (error) {
-      console.error('Error showing upload modal:', error);
-      this.toastService.error('Could not open upload modal');
-    }
-  }
-
-  // Fallback method to show modal without bootstrap
-  private showModalFallback(modalElement: HTMLElement): void {
-    // Basic CSS-based modal display
-    modalElement.classList.add('show');
-    modalElement.style.display = 'block';
-    document.body.classList.add('modal-open');
-
-    // Create backdrop
-    const backdrop = document.createElement('div');
-    backdrop.className = 'modal-backdrop fade show';
-    document.body.appendChild(backdrop);
-
-    // Add close functionality to close buttons
-    const closeButtons = modalElement.querySelectorAll('[data-bs-dismiss="modal"]');
-    closeButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        this.hideModalFallback(modalElement);
-      });
-    });
-
-    this.toastService.info('Using fallback modal display (Bootstrap JS not available)');
-  }
-
-    // Fallback method to hide modal without bootstrap
-    private hideModalFallback(modalElement: HTMLElement): void {
-      modalElement.classList.remove('show');
-      modalElement.style.display = 'none';
-      document.body.classList.remove('modal-open');
-
-      const backdrop = document.querySelector('.modal-backdrop');
-      if (backdrop) {
-        backdrop.remove();
-      }
-    }
-
   onUploadGame(form: NgForm): void {
     if (form.invalid) {
       return;
@@ -263,27 +177,12 @@ export class GameListComponent implements OnInit {
     });
   }
 
-
   hideUploadModal(): void {
     const modalElement = document.getElementById('uploadGameModal');
     if (modalElement) {
-      // Check if bootstrap is available
-      if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
-        const modal = bootstrap.Modal.getInstance(modalElement);
-        if (modal) {
-          modal.hide();
-        }
-      } else {
-        // Fallback approach when bootstrap is not available
-        modalElement.classList.remove('show');
-        modalElement.style.display = 'none';
-        document.body.classList.remove('modal-open');
-
-        // Remove backdrop if exists
-        const backdrop = document.querySelector('.modal-backdrop');
-        if (backdrop) {
-          backdrop.remove();
-        }
+      const modal = bootstrap.Modal.getInstance(modalElement);
+      if (modal) {
+        modal.hide();
       }
     }
   }
@@ -409,111 +308,32 @@ export class GameListComponent implements OnInit {
     });
   }
 
-  // 修改 viewGame 方法，确保游戏访问 URL 使用完整地址
-  viewGame(game: GameDto): void {
-    if (game.status !== GameStatus.Approved) {
-      this.toastService.warn('Only approved games can be viewed');
-      return;
-    }
-
-    this.gameService.getGameEntryUrl(game.id).subscribe({
-      next: (url) => {
-        console.log(url);
-
-        // 如果返回的是相对 URL，添加 API 基础 URL
-        if (url && !url.startsWith('http')) {
-          url = `${this.API_BASE_URL}${url.startsWith('/') ? '' : '/'}${url}`;
-        }
-        window.open(url, '_blank');
-      },
-      error: (error) => {
-        this.toastService.error(`Error retrieving game URL: ${error.error?.message || 'Unknown error'}`, 'Error');
-      }
-    });
+// 修改 viewGame 方法，确保游戏访问 URL 使用完整地址
+viewGame(game: GameDto): void {
+  if (game.status !== GameStatus.Approved) {
+    this.toastService.warn('Only approved games can be viewed');
+    return;
   }
+
+  this.gameService.getGameEntryUrl(game.id).subscribe({
+    next: (url) => {
+      console.log(url);
+
+      // 如果返回的是相对 URL，添加 API 基础 URL
+      if (url && !url.startsWith('http')) {
+        url = `${this.API_BASE_URL}${url.startsWith('/') ? '' : '/'}${url}`;
+      }
+      window.open(url, '_blank');
+    },
+    error: (error) => {
+      this.toastService.error(`Error retrieving game URL: ${error.error?.message || 'Unknown error'}`, 'Error');
+    }
+  });
+}
 
   editGame(game: GameDto): void {
-    // 设置当前选中的游戏
-    this.selectedGame = { ...game };  // 创建一个副本避免直接修改列表中的游戏对象
-
-    // 显示编辑模态框
-    try {
-      if (this.editModal) {
-        this.editModal.show();
-      } else {
-        // 尝试初始化模态框
-        const modalElement = document.getElementById('editGameModal');
-        if (modalElement) {
-          if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
-            this.editModal = new bootstrap.Modal(modalElement);
-            this.editModal.show();
-          } else {
-            // Bootstrap不可用时的回退方案
-            this.showModalFallback(modalElement);
-          }
-        } else {
-          this.toastService.error('编辑模态框元素未在DOM中找到');
-        }
-      }
-    } catch (error) {
-      console.error('显示编辑模态框时出错:', error);
-      this.toastService.error('无法打开编辑模态框');
-    }
-  }
-
-  onUpdateGame(form: NgForm): void {
-    if (form.invalid || !this.selectedGame) {
-      return;
-    }
-
-    const iconFile = this.editIconInput.nativeElement.files?.[0];
-    const gamePackageFile = this.editGamePackageInput.nativeElement.files?.[0];
-
-    this.gameUploadService.updateGame(
-      this.selectedGame.id,
-      form.value.editGameName || this.selectedGame.name,
-      form.value.editGameDescription || this.selectedGame.description || '',
-      form.value.editGameDeveloper || this.selectedGame.developerName,
-      form.value.editGameVersion || this.selectedGame.version,
-      iconFile as unknown as any,
-      gamePackageFile as unknown as any
-    ).subscribe({
-      next: (result) => {
-        this.toastService.success(`游戏 "${result.name}" 更新成功`, '成功');
-
-        // 关闭模态框
-        this.hideEditModal();
-
-        // 刷新游戏列表
-        this.getGameList();
-      },
-      error: (error) => {
-        this.toastService.error(`更新游戏时出错: ${error.error?.message || '未知错误'}`, '错误');
-      }
-    });
-  }
-
-  hideEditModal(): void {
-    const modalElement = document.getElementById('editGameModal');
-    if (modalElement) {
-      // 检查 bootstrap 是否可用
-      if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
-        const modal = bootstrap.Modal.getInstance(modalElement);
-        if (modal) {
-          modal.hide();
-        }
-      } else {
-        // bootstrap 不可用时的回退方案
-        modalElement.classList.remove('show');
-        modalElement.style.display = 'none';
-        document.body.classList.remove('modal-open');
-
-        // 移除背景遮罩
-        const backdrop = document.querySelector('.modal-backdrop');
-        if (backdrop) {
-          backdrop.remove();
-        }
-      }
-    }
+    // This could be implemented to navigate to an edit page or open an edit modal
+    // For this example, we'll just show a toast that it's not implemented
+    this.toastService.info('Edit functionality not implemented in this version');
   }
 }

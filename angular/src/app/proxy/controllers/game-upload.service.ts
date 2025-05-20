@@ -9,37 +9,21 @@ import type { IFormFile } from '../microsoft/asp-net-core/http/models';
 export class GameUploadService {
   apiName = 'Default';
 
-  updateGame = (id: string, name: string, description: string, developerName: string, version: string, icon: File | null, gamePackage: File | null, config?: Partial<Rest.Config>) => {
+  uploadGame = (name: string, description: string, developerName: string, version: string, icon: IFormFile, gamePackage: IFormFile, config?: Partial<Rest.Config>) => {
     const formData = new FormData();
-
-    // 只有当文件存在时才添加到FormData
-    if (icon) {
-      formData.append('icon', icon);
-    }
-
-    if (gamePackage) {
-      formData.append('gamePackage', gamePackage);
-    }
-
-    return this.restService.request<any, GameDto>({
-      method: 'PUT',
-      url: '/api/game-repository/games/upload',
-      params: { id, name, description, developerName, version },
-      body: formData,
-    }, { apiName: this.apiName, ...config });
-  }
-
-  uploadGame = (name: string, description: string, developerName: string, version: string, icon: File, gamePackage: File, config?: Partial<Rest.Config>) => {
-    const formData = new FormData();
-    formData.append('icon', icon);
-    formData.append('gamePackage', gamePackage);
+    formData.append('name', name);
+    formData.append('description', description);
+    formData.append('developerName', developerName);
+    formData.append('version', version);
+    formData.append('icon', icon as any);
+    formData.append('gamePackage', gamePackage as any);
 
     return this.restService.request<any, GameDto>({
       method: 'POST',
       url: '/api/game-repository/games/upload',
-      params: { name, description, developerName, version },
       body: formData,
-    }, { apiName: this.apiName, ...config });
+    },
+    { apiName: this.apiName, ...config });
   }
 
   constructor(private restService: RestService) {}
