@@ -28,7 +28,21 @@ GameRepository 是一个基于 ABP 框架开发的分层启动解决方案，遵
 cd H5GameRe/aspnet-core/src/GameRepository.DbMigrator
 # 运行 DbMigrator
 dotnet run
+# 进入 HttpApi.Host 项目目录
+cd H5GameRe/aspnet-core/src/GameRepository.HttpApi.Host
+# 运行 API 应用程序
+dotnet run
 ```
-
+### 前端
+#### 1. model安装
+```bash
+# 假设在项目根目录下，进入 DbMigrator 项目目录
+cd H5GameRe\angular
+# 运行 DbMigrator
+npm install
+npm start
+```
+## 五、完成启动部署
+OK
 
 
